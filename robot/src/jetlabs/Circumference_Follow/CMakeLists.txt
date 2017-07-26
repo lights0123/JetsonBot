@@ -198,4 +198,4 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 add_executable(circumference src/circumference.cpp)
-target_link_libraries(wiimote ${catkin_LIBRARIES})
+target_link_libraries(circumference ${catkin_LIBRARIES})
