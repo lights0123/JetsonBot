@@ -534,27 +534,18 @@ static int run_iface(struct xwii_iface *iface) {
 				break;
 			}
 		} else if (!freeze) {
-			if(event.type!=XWII_EVENT_MOTION_PLUS&&event.type!=XWII_EVENT_ACCEL)
-			printf("%u\n",event.type);
 			switch (event.type) {
-				case XWII_EVENT_GONE:
+				case XWII_EVENT_GONE:					//Needed
 					print_info("Info: Device gone");
 					fds[1].fd = -1;
 					fds[1].events = 0;
 					fds_num = 1;
 					break;
-				case XWII_EVENT_WATCH:
+				case XWII_EVENT_WATCH:					//Needed
 					handle_watch();
 					break;
 				case XWII_EVENT_KEY:
-					if (mode != MODE_ERROR)
-						key_show(&event);
-					break;
-				case XWII_EVENT_ACCEL:
-					if (mode == MODE_EXTENDED)
-						accel_show_ext(&event);
-					if (mode != MODE_ERROR)
-						accel_show(&event);
+					key_show(&event);
 					break;
 				case XWII_EVENT_NUNCHUK_KEY:
 				case XWII_EVENT_NUNCHUK_MOVE:
@@ -567,7 +558,7 @@ static int run_iface(struct xwii_iface *iface) {
 
 	return ret;
 }
-
+//Gets devices
 static int enumerate() {
 	struct xwii_monitor *mon;
 	char *ent;
@@ -617,13 +608,12 @@ int main(int argc, char **argv) {
 	printf("Init");
 	int ret = 0;
 	char *path = NULL;
-	if (argv[1][0] != '/')
-		path = get_dev(atoi(argv[1]));
-	ret = xwii_iface_new(&iface, path ? path : argv[1]);
+	path = get_dev(1);
+	ret = xwii_iface_new(&iface, path);
 	free(path);
 	if (ret) {
-		printf("Cannot create xwii_iface '%s' err:%d\n",
-			   argv[1], ret);
+		print_error("Cannot create xwii_iface '%s' err:%d\n",
+					1, ret);
 	} else {
 		//refresh();
 
