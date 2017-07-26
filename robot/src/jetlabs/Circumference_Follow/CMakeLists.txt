@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(circumference)
+project(Circumference_Follow)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -8,10 +8,13 @@ project(circumference)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  std_msgs
-)
+        roscpp
+        rospy
+        std_msgs
+        OpenCV
+        cv_bridge
+        image_transport
+        )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -103,10 +106,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES wiimote
-#  CATKIN_DEPENDS roscpp rospy std_msgs
-#  DEPENDS system_lib
+        #  INCLUDE_DIRS include
+        #  LIBRARIES wiimote
+        #  CATKIN_DEPENDS roscpp rospy std_msgs
+        #  DEPENDS system_lib
 )
 
 ###########
@@ -116,8 +119,8 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
+        # include
+        ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -197,5 +200,5 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-add_executable(circumference src/circumference.cpp)
-target_link_libraries(circumference ${catkin_LIBRARIES})
+add_executable(Circumference_Follow src/circumference.cpp)
+target_link_libraries(Circumference_Follow ${catkin_LIBRARIES})

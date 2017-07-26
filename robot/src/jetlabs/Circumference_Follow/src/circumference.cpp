@@ -39,7 +39,7 @@ private:
 
     void cameraUpdate(const ros::WallTimerEvent &);
 
-    void imageCallback(const sensor_msgs::ImageConstPtr &msg)
+    void imageCallback(const sensor_msgs::ImageConstPtr &msg);
 
     bool takePicture = false;
 };
