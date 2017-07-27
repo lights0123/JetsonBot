@@ -11,9 +11,11 @@
 #include <iosfwd>
 #include <sstream>
 #include <stdlib.h>
+#include <std_msgs/UInt64.h>
+#include <signal.h>
 
-#define LINEAR_SPEED 0.7
-#define ANGULAR_SPEED 0.5
+#define LINEAR_SPEED 0.65
+#define ANGULAR_SPEED 1.285
 
 class MotorTest {
 public:
@@ -24,9 +26,9 @@ private:
     ros::NodeHandle nh;
     geometry_msgs::Twist vel_msg;
 
-    void leftEncoderCallback(const std_msgs::Int64::ConstPtr &msg);
+    void leftEncoderCallback(const std_msgs::UInt64::ConstPtr &msg);
 
-    void rightEncoderCallback(const std_msgs::Int64::ConstPtr &msg);
+    void rightEncoderCallback(const std_msgs::UInt64::ConstPtr &msg);
 
     image_transport::Subscriber raw_image_sub;
     unsigned long long leftEncoder;
@@ -34,26 +36,25 @@ private:
     ros::Subscriber left_encoder_sub;
     ros::Subscriber right_encoder_sub;
     bool isTurning = true;
-    int diameter = 5;
+    int diameter = 2;
     ros::WallTimer timer;
+
 
     void cameraUpdate(const ros::WallTimerEvent &);
 
     void imageCallback(const sensor_msgs::ImageConstPtr &msg);
-
     bool takePicture = false;
 };
 
 MotorTest::MotorTest() {
     vel_pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 10);
-    left_encoder_sub = nh.subscribe<std_msgs::Int64>("/arduino/encoder_left_value", 10, &MotorTest::leftEncoderCallback,
+    left_encoder_sub = nh.subscribe<std_msgs::UInt64>("/arduino/encoder_left_value", 10, &MotorTest::leftEncoderCallback,
                                                      this);
-    right_encoder_sub = nh.subscribe<std_msgs::Int64>("/arduino/encoder_right_value", 10,
+    right_encoder_sub = nh.subscribe<std_msgs::UInt64>("/arduino/encoder_right_value", 10,
                                                       &MotorTest::rightEncoderCallback, this);
     image_transport::ImageTransport it(nh);
-    raw_image_sub = it.subscribe("/usb_cam/image_raw", 1, imageCallback);
+    raw_image_sub = it.subscribe("/usb_cam/image_raw", 1, &MotorTest::imageCallback,this);
     timer = nh.createWallTimer(ros::WallDuration(0.2), &MotorTest::cameraUpdate, this);
-
 }
 
 void MotorTest::cameraUpdate(const ros::WallTimerEvent &) {
@@ -63,19 +64,27 @@ void MotorTest::cameraUpdate(const ros::WallTimerEvent &) {
 
 
 }
-
-void MotorTest::leftEncoderCallback(const std_msgs::Int64::ConstPtr &msg) {
+//2D: 9373, 5781
+//5D: 11261, 15022
+//2D: 11, 7
+//5D: 14, 18
+//2D: 11, 7
+//5D: 132.72, 170.64
+//2D: 11, 7
+//5D: 42, 54
+//2D: 11, 7
+//5D: 3, 4
+void MotorTest::leftEncoderCallback(const std_msgs::UInt64::ConstPtr &msg) {
     leftEncoder = msg->data;
 }
-
-void MotorTest::rightEncoderCallback(const std_msgs::Int64::ConstPtr &msg) {
+void MotorTest::rightEncoderCallback(const std_msgs::UInt64::ConstPtr &msg) {
     rightEncoder = msg->data;
     if (isTurning) {
 
-        ROS_INFO("TURN");
         vel_msg.linear.x = LINEAR_SPEED;
-        vel_msg.angular.z = 0.9 / diameter;
+        vel_msg.angular.z = ANGULAR_SPEED / diameter;
         vel_pub.publish(vel_msg);
+        ROS_INFO("Left Encoder: %u, Right Encoder: %u",leftEncoder,rightEncoder);
     }
 }
 
