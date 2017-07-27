@@ -8,11 +8,11 @@
 #define SAFE_TO_TURN 30 //cm
 //Full Rotation: 800 turns
 //Wheel Circumference: 9.84 in
-#define TURN_TURNS 700
+#define TURN_TURNS 500
 #define BACKUP_TURNS 500
 
 #define LINEAR_SPEED 1.1
-#define ANGULAR_SPEED 0.9
+#define ANGULAR_SPEED 10
 #define ANGULAR_SPEED_CORRECTION (-0.1)
 
 enum sonarLayout {
