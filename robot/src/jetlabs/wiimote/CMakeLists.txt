@@ -8,10 +8,14 @@ project(wiimote)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  std_msgs
-)
+        roscpp
+        rospy
+        std_msgs
+        cv_bridge
+        image_transport
+        dynamic_reconfigure
+        OpenCV
+        )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -103,10 +107,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES wiimote
-#  CATKIN_DEPENDS roscpp rospy std_msgs
-#  DEPENDS system_lib
+        CATKIN_DEPENDS roscpp rospy std_msgs cv_bridge image_transport
 )
 
 ###########
@@ -116,8 +117,9 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
+        # include
+        ${catkin_INCLUDE_DIRS}
+        ${OpenCV_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -200,3 +202,13 @@ include_directories(
 add_executable(wiimote src/wiimote.cpp src/xwiimote.h)
 TARGET_LINK_LIBRARIES(wiimote "/usr/lib/aarch64-linux-gnu/libxwiimote.so.2.0.0")
 target_link_libraries(wiimote ${catkin_LIBRARIES})
+
+add_executable(line_pid_wii src/line_pid.cpp)
+target_link_libraries(line_pid_wii ${catkin_LIBRARIES})
+
+add_executable(sonar_wii src/sonar.cpp)
+target_link_libraries(sonar_wii ${catkin_LIBRARIES})
+
+add_executable(line_detector_wii src/line_detector.cpp)
+target_link_libraries(line_detector_wii ${catkin_LIBRARIES})
+target_link_libraries(line_detector_wii ${OpenCV_LIBRARIES})

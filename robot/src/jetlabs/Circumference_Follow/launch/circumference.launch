@@ -1,4 +1,4 @@
 <launch>
   <include file="$(find jet_bringup)/launch/jet_real.launch"/>
-  <node name="circumference" pkg="circumference" type="circumference" output="screen"/>
+  <node name="Circumference_Follow" pkg="Circumference_Follow" type="Circumference_Follow" output="screen"/>
 </launch>

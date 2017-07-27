@@ -1,4 +1,7 @@
 <launch>
   <include file="$(find jet_bringup)/launch/jet_real.launch"/>
   <node name="wiimote" pkg="wiimote" type="wiimote" output="screen"/>
+  <node name="line_pid_wii" pkg="wiimote" type="line_pid_wii" output="screen"/>
+  <node name="line_detector_wii" pkg="wiimote" type="line_detector_wii" output="screen"/>
+  <node name="sonar_wii" pkg="wiimote" type="sonar_wii" output="screen"/>
 </launch>
