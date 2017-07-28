@@ -164,12 +164,12 @@ void SonarSensorExample::processMotorState() {
 			vel_pub.publish(vel_msg);
 			break;
 		case MOTOR_TURNING_LEFT:
-			vel_msg.linear.x = LINEAR_SPEED / 2.0;
+			vel_msg.linear.x = 0.7;
 			vel_msg.angular.z = ANGULAR_SPEED;
 			vel_pub.publish(vel_msg);
 			break;
 		case MOTOR_TURNING_RIGHT:
-			vel_msg.linear.x = LINEAR_SPEED / 2.0;
+			vel_msg.linear.x = 0.7;
 			vel_msg.angular.z = -ANGULAR_SPEED;
 			vel_pub.publish(vel_msg);
 			break;
